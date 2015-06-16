@@ -72,4 +72,22 @@ slider, [slider] {
       }
     }
   }
+
+  div.pips{
+    width: 100%;
+    height: 100%;
+    width: 94%;
+    height: 100%;
+    margin-left: 2%;
+
+    span{
+      background: #c4c4c4;
+      border-radius: 4px;
+      width: 8px;
+      height: 8px;
+      position: absolute;
+      display: block;
+      top: 3px;
+    }
+  }
 }

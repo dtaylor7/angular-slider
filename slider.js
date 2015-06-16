@@ -99,7 +99,7 @@
         ngModelLow: '=?',
         ngModelHigh: '=?'
       },
-      template: '<div class="bar"><div class="selection"></div></div>\n<div class="handle low"></div><div class="handle high"></div>\n<div class="bubble limit low">{{ values.length ? values[floor || 0] : floor }}</div>\n<div class="bubble limit high">{{ values.length ? values[ceiling || values.length - 1] : ceiling }}</div>\n<div class="bubble value low">{{ values.length ? values[local.ngModelLow || local.ngModel || 0] : local.ngModelLow || local.ngModel || 0 }}</div>\n<div class="bubble value high">{{ values.length ? values[local.ngModelHigh] : local.ngModelHigh }}</div>',
+      template: '<div class="bar"><div class="selection"></div></div>\n<div class="handle low"></div><div class="handle high"></div>\n<div class="bubble limit low">{{ values.length ? values[floor || 0] : floor }}</div>\n<div class="bubble limit high">{{ values.length ? values[ceiling || values.length - 1] : ceiling }}</div>\n<div class="bubble value low">{{ values.length ? values[local.ngModelLow || local.ngModel || 0] : local.ngModelLow || local.ngModel || 0 }}</div>\n<div class="bubble value high">{{ values.length ? values[local.ngModelHigh] : local.ngModelHigh }}</div><div class="pips"><span ng-repeat="a in range(values.length || (ceiling - floor+1)) track by $index" style="left:{{ ( $index / (values.length || ceiling - floor) ) * 100}}%"></span></div>',
       compile: function(element, attributes) {
         var high, low, range, watchables;
         range = (attributes.ngModel == null) && (attributes.ngModelLow != null) && (attributes.ngModelHigh != null);
@@ -111,6 +111,9 @@
         }
         return {
           post: function(scope, element, attributes) {
+            scope.range = function(n) {
+              return new Array(n);
+            };
             var bar, barWidth, bound, ceilBub, dimensions, e, flrBub, handleHalfWidth, highBub, lowBub, maxOffset, maxPtr, maxValue, minOffset, minPtr, minValue, ngDocument, offsetRange, selection, updateDOM, upper, valueRange, w, _i, _j, _len, _len1, _ref, _ref1;
             _ref = (function() {
               var _i, _len, _ref, _results;
