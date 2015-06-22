@@ -95,22 +95,33 @@
         precision: '@',
         buffer: '@',
         dragstop: '@',
+        pips: '@',
         ngModel: '=?',
         ngModelLow: '=?',
         ngModelHigh: '=?'
       },
-      template: '<div class="bar"><div class="selection"></div></div>\n<div class="handle low"></div><div class="handle high"></div>\n<div class="bubble limit low">{{ values.length ? values[floor || 0] : floor }}</div>\n<div class="bubble limit high">{{ values.length ? values[ceiling || values.length - 1] : ceiling }}</div>\n<div class="bubble value low">{{ values.length ? values[local.ngModelLow || local.ngModel || 0] : local.ngModelLow || local.ngModel || 0 }}</div>\n<div class="bubble value high">{{ values.length ? values[local.ngModelHigh] : local.ngModelHigh }}</div><div class="pips"><span ng-repeat="a in range(values.length || (ceiling - floor+1)) track by $index" style="left:{{ ( $index / (values.length || ceiling - floor) ) * 100}}%"></span></div>',
+      template: '<div class="bar"><div class="selection"></div></div>\n<div class="handle low"></div><div class="handle high"></div>\n<div class="bubble limit low">{{ values.length ? values[floor || 0] : floor }}</div>\n<div class="bubble limit high">{{ values.length ? values[ceiling || values.length - 1] : ceiling }}</div>\n<div class="bubble value low">{{ values.length ? values[local.ngModelLow || local.ngModel || 0] : local.ngModelLow || local.ngModel || 0 }}</div>\n<div class="bubble value high">{{ values.length ? values[local.ngModelHigh] : local.ngModelHigh }}</div><div class="pips"><span ng-repeat="a in getNumber(pips) track by $index" style="left:{{ ( $index / pips ) * 100 }}%"></span></div>',
       compile: function(element, attributes) {
+
+
         var high, low, range, watchables;
         range = (attributes.ngModel == null) && (attributes.ngModelLow != null) && (attributes.ngModelHigh != null);
         low = range ? 'ngModelLow' : 'ngModel';
         high = 'ngModelHigh';
-        watchables = ['floor', 'ceiling', 'values', low];
+        watchables = ['floor', 'ceiling', 'values', 'pips', low];
         if (range) {
           watchables.push(high);
         }
         return {
           post: function(scope, element, attributes) {
+
+            scope.length = scope.values ? scope.values.length : scope.ceiling - scope.floor;
+            scope.pips = scope.pips || scope.length;
+
+            scope.getNumber = function(num) {
+              return new Array(parseInt(num)+1);
+            }
+
             scope.range = function(n) {
               return new Array(n);
             };
